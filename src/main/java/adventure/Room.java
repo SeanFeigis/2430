@@ -2,7 +2,8 @@ package adventure;
 
 public class Room{
     /* you will need to add some private member variables */
-
+    private String roomName;
+    private String longDescription;
     /* required public methods */
 
     public ArrayList<Item> listItems(){
@@ -11,7 +12,7 @@ public class Room{
     }
 
     public String getName(){
-
+        return roomName;
     }
 
     public String getLongDescription(){

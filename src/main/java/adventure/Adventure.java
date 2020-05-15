@@ -10,10 +10,11 @@ public class Adventure{
 
     public ArrayList<Room> listAllRooms(){
 
+
     }
 
     public ArrayList<Item> listAllItems(){
-
+        
     }
 
     public String getCurrentRoomDescription(){

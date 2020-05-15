@@ -13,9 +13,9 @@ public class Game{
 
         Game theGame = new Game();
         // 1. Print a welcome message to the user
-
+            System.out.println("Welcome to the <insert name> game!");
         // 2. Ask the user if they want to load a json file.
-
+            System.out.prtinln("Would you like to load a json file(y/n)?");
         /* 3. Parse the file the user specified to create the
         adventure, or load your default adventure*/
 
