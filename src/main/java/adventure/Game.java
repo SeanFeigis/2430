@@ -10,7 +10,7 @@ public class Game{
         /* You will need to instantiate an object of type
         game as we're going to avoid using static methods
         for this assignment */
-
+        Scanner scnr = new Scanner(System.in);
         Game theGame = new Game();
         // 1. Print a welcome message to the user
             System.out.println("Welcome to the <insert name> game!");
