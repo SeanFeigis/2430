@@ -22,9 +22,9 @@ Delete this section before you submit for grading.
 
 ## Author Information
 
-* Name:
-* Email:
-* Student ID:
+* Name: Sean Shaya Feigiss
+* Email: sfeigis@uoguelph.ca    
+* Student ID: 1096849
 
 
 
