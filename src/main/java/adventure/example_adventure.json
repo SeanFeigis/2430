@@ -4,29 +4,29 @@
       {
         "id": 100,
         "start": "true",
-        "name": "the lobby",
-        "short_description": "This is the lobby of the hotel",
-        "long_description": "The lobby is a large room with ornate pictures on the walls",
+        "name": "the forest",
+        "short_description": "a green deciduous forest",
+        "long_description": "the forest is bright green, but darkened from the thick canopy. you can see a massive redwood to the north",
         "entrance": [
           {
             "id": 101,
-            "dir": "S"
+            "dir": "N"
           }
         ]
       },
       {
         "id": 101,
-        "name": "the ballroom",
-        "short_description": "a ballroom",
-        "long_description": "a longer description of a ballroom",
+        "name": "the big tree",
+        "short_description": "a massive redwood",
+        "long_description": "a massive redwood looms over the area, casting a giant shadow behind you. there is a river to the east.",
         "entrance": [
           {
             "id": 100,
-            "dir": "N"
+            "dir": "S"
           },
           {
             "id": 102,
-            "dir": "W"
+            "dir": "E"
           }
         ],
         "loot": [
@@ -37,9 +37,9 @@
       },
       {
         "id": 102,
-        "name": "the coatroom",
-        "short_description": "this is a coatroom",
-        "long_description": "a longer description of a coatroom",
+        "name": "the river",
+        "short_description": "a medium sized river blocks any entry across",
+        "long_description": "a medium sized river rushes past the area, gleaming with fish and minerals, from the look of it, it seems to deep to cross",
         "entrance": [
           {
             "id": 101,
@@ -51,18 +51,31 @@
             "id": 1
           }
         ]
+      },
+      {
+        "id": 104,
+        "start": "true",
+        "name": "north river",
+        "short_description": "a green deciduous forest",
+        "long_description": "the forest is bright green, but darkened from the thick canopy. you can see a massive redwood to the north",
+        "entrance": [
+          {
+            "id": 101,
+            "dir": "N"
+          }
+        ]
       }
     ],
     "item": [
       {
         "id": 1,
-        "name": "potion",
-        "desc": "a potion in a red bottle"
+        "name": "stick",
+        "desc": "a sharp stick"
       },
       {
         "id": 2,
-        "name": "wand",
-        "desc": "an ornate wand carved from deep auburn wood"
+        "name": "compass",
+        "desc": "a worn down yet functional compass"
       }
     ]
   }

@@ -21,14 +21,12 @@ public class Adventure{
    //public Adventure 
 
     public ArrayList<Room> listAllRooms(){
-        System.out.printf("Listing all items:");
-        return null;
+        return allRooms;
 
     }
 
     public ArrayList<Item> listAllItems(){
-        System.out.printf("Listing all items");
-        return null;
+        return allItems;
     }
 
     public String getCurrentRoomDescription(){

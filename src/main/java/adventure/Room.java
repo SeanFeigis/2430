@@ -9,13 +9,14 @@ public class Room{
     private boolean startRoom = false;;
     private String longDescription;
     private String shortDescription;
+    private ArrayList<Room> allRooms;
     private ArrayList<Long> entranceID = new ArrayList<Long>();
     private ArrayList<String> directions = new ArrayList<String>();
     private ArrayList<Item> items = new ArrayList<Item>();
     /* required public methods */
 
     public Room() {
-        
+
     }
 
     public Room(long id, String Name, String sDescription, String lDescription) {
@@ -29,8 +30,20 @@ public class Room{
         return items;
     }
 
+    public void addAllRooms(ArrayList<Room> allRoom) {
+        allRooms = allRoom;
+    }
+
+    public ArrayList<Room> getAllRooms() {
+        return allRooms;
+    }
+
     public String getName(){
         return roomName;  
+    }
+
+    public long getID() {
+        return roomId;
     }
 
     public String getLongDescription(){
@@ -42,7 +55,26 @@ public class Room{
     }
 
     public Room getConnectedRoom(String direction) {
-        return null;
+        long ID = 0;
+        Room newRoom = null;
+        for (String dir : directions) {
+            //System.out.println(dir);
+            //System.out.println(direction);
+            if (dir.equals(direction)) {
+                ID = entranceID.get(directions.indexOf(direction));
+                System.out.print(ID);
+            }
+        }
+    
+        for (Room connectedRoom : allRooms) {
+            if (ID == connectedRoom.getID()) {
+                newRoom = connectedRoom;
+            }
+
+        }
+    
+
+        return newRoom;
     }
 
     public void addItem (Item item) {
