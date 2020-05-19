@@ -104,7 +104,7 @@ public class Game{
                         currentRoom = tempRoom;
                     }
                 } else {
-                    System.out.println("Please enter a vald input");
+                    System.out.println("Please enter a vald input\n");
                 }
             } 
         }
@@ -124,7 +124,7 @@ public class Game{
                 System.out.println("\n");
             }
         } else {
-            System.out.println("You cannot traverse there");
+            System.out.println("You cannot traverse there\n");
         }
         return currentRoom;
     }
