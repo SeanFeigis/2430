@@ -4,22 +4,17 @@ import java.util.ArrayList;
 public class Adventure{
     /* you will need to add some private member variables */
 
-    ArrayList<Room> allRooms;
-    ArrayList<Item> allItems; 
-    Room currentRoom;
+    private ArrayList<Room> allRooms;
+    private ArrayList<Item> allItems; 
+    private Room currentRoom;
 
-    public Adventure (ArrayList<Room> roomArray, ArrayList<Item> itemArray ) {
+    public Adventure(ArrayList<Room> roomArray, ArrayList<Item> itemArray ) {
         allRooms = roomArray;
         allItems = itemArray;
     }
 
-    /* ======== Required public methods ========== */
-        /* note,  you don't have to USE all of these
-        methods but you do have to provide them.
-        We will be using them to test your code */
 
    //public Adventure 
-
     public ArrayList<Room> listAllRooms(){
         return allRooms;
 

@@ -4,9 +4,9 @@
       {
         "id": 100,
         "start": "true",
-        "name": "the forest",
-        "short_description": "a green deciduous forest",
-        "long_description": "the forest is bright green, but darkened from the thick canopy. you can see a massive redwood to the north",
+        "name": "The forest",
+        "short_description": "A green deciduous forest",
+        "long_description": "The forest is bright green, but darkened from the thick canopy. you can see a massive redwood to the north",
         "entrance": [
           {
             "id": 101,
@@ -16,9 +16,9 @@
       },
       {
         "id": 101,
-        "name": "the big tree",
-        "short_description": "a massive redwood",
-        "long_description": "a massive redwood looms over the area, casting a giant shadow behind you. there is a river to the east.",
+        "name": "The big tree",
+        "short_description": "A massive redwood",
+        "long_description": "A massive redwood looms over the area, casting a giant shadow behind you. there is a river to the east.",
         "entrance": [
           {
             "id": 100,
@@ -37,13 +37,17 @@
       },
       {
         "id": 102,
-        "name": "the river",
-        "short_description": "a medium sized river blocks any entry across",
-        "long_description": "a medium sized river rushes past the area, gleaming with fish and minerals, from the look of it, it seems to deep to cross",
+        "name": "The river",
+        "short_description": "A medium sized river blocks any entry across",
+        "long_description": "A medium sized river rushes past the area, gleaming with fish and minerals. From the look of it, it seems to deep to cross",
         "entrance": [
           {
             "id": 101,
-			"dir": "E"
+			"dir": "W"
+          },
+          {
+            "id": 103,
+            "dir": "N"
           }
         ],
         "loot": [
@@ -53,15 +57,35 @@
         ]
       },
       {
-        "id": 104,
-        "start": "true",
-        "name": "north river",
-        "short_description": "a green deciduous forest",
-        "long_description": "the forest is bright green, but darkened from the thick canopy. you can see a massive redwood to the north",
+        "id": 103,
+        "name": "north river bank",
+        "short_description": "The banks of a river, now significantly narrowed",
+        "long_description": "The river narrows to a crossable distance, with the water still gushing strongly. To the west is a dead tree ",
         "entrance": [
           {
-            "id": 101,
-            "dir": "N"
+            "id": 102,
+            "dir": "S"
+          },
+          {
+            "id": 104,
+            "dir": "W"
+          }
+        ]
+      },
+      {
+        "id": 104,
+        "name": "the dead tree",
+        "short_description": "A dead tree sits in the middle of an open field",
+        "long_description": "A small dead tree sits alone in the middle of a small field. The tree is covered in moss.",
+        "entrance": [
+          {
+            "id": 103,
+            "dir": "E"
+          }
+        ],
+        "loot": [
+          {
+            "id": 3
           }
         ]
       }
@@ -70,12 +94,17 @@
       {
         "id": 1,
         "name": "stick",
-        "desc": "a sharp stick"
+        "desc": "A sharp stick"
       },
       {
         "id": 2,
         "name": "compass",
-        "desc": "a worn down yet functional compass"
+        "desc": "A worn down yet functional compass"
+      },
+      {
+        "id": 3,
+        "name": "moss",
+        "desc": "Moldy green moss"
       }
     ]
   }

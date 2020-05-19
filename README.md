@@ -1,40 +1,26 @@
-# Getting Started
-Delete this section before you submit for grading.
-
-#### Starting your assignment
-
-* clone this repository to your computer
-* make an A1 branch
- * git branch A1
- * git checkout A1
-
-#### To use mvn from the command line
-* clean:  mvn clean
-* checkstyle: mvn checkstyle:checkstyle  (results show up in target/site)
-* compile : mvn compile
-* execute: 'mvn exec:java'
-
-#### Checkstyle
- * results will show up in a nice html format in target/site
- * uses the file checks.xml that is in the config directory
- 
-# README info to submit
-
 ## Author Information
 
-* Name: Sean Shaya Feigiss
+* Name: Sean Shaya Feigis
 * Email: sfeigis@uoguelph.ca    
 * Student ID: 1096849
 
-
-
 ## How to operate your program
-
+$mvn compile
+    -compiles the program
+$mvn exec:java
+    -runs the program
+$mvn clean
+    -removes created files
 ### Running from the command line (without maven)
-
+dont do it
 ### Instructions for using the program
+Program will prompt the user for output through std.out.
+When asked for a game file, remember to use the proper relative pathname.
 
-
+Game Commands:
+look : gives a longer description of the current room
+look "item name" gives a description of the item
+go "direction" : moves the player in that direction, if posssible.
 
 ## Statement of Individual Work
 

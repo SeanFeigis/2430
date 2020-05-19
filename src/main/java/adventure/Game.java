@@ -8,85 +8,77 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 
 public class Game{
 
    /* this is the class that runs the game.
    You may need some member variables */
 
-   public static void main(String args[]){
+   public static void main(String[] args){
 
-      /* You will need to instantiate an object of type
-      game as we're going to avoid using static methods
-      for this assignment */
-      Scanner scnr = new Scanner(System.in);
-      Game theGame = new Game();
+    Scanner scnr = new Scanner(System.in);
+    Game theGame = new Game();
 
-      JSONObject adventure_json = new JSONObject();
-      JSONObject adventure_json2 = new JSONObject();
-      Adventure adventure;
-      String gameInput;
-      boolean defaultAdventure = true;
+    JSONObject adventureJson = new JSONObject();
+    JSONObject adventureJson2 = new JSONObject();
+    Adventure adventure;
+    String gameInput;
+    boolean defaultAdventure = true;
 
+    System.out.println("*******************************");
+    System.out.println("Welcome to the adventure game!");
+    System.out.println("*******************************");
 
-        // 1. Print a welcome message to the user
-            System.out.println("Welcome to the adventure game!");
-        // 2. Ask the user if they want to load a json file.
-            System.out.println("Would you like to load a json file(y/n)?");
-            boolean correctInput = false;
-            while (!correctInput) {
-               gameInput = scnr.nextLine().toLowerCase();
-               if (gameInput.equals("y")) {
-                  System.out.println("Please enter the filename(Remember to ues the proper relative path).");
-                  adventure_json = theGame.loadAdventureJson(scnr.next());
-                  if (adventure_json != null) {
-                      correctInput = true;
-                    defaultAdventure = false;
-                  }
-                  
-               } 
-               else if (gameInput.equals("n")) {
-                  adventure_json = theGame.loadAdventureJson("./src/main/java/adventure/example_adventure.json");
-                  correctInput = true;
-               } 
-               else {
-                  System.out.println("Error, invald input. Please Try again.");
-               }
+    System.out.println("Would you like to load a json file(y/n)?");
+    boolean correctInput = false;
+    while (!correctInput) {
+        gameInput = scnr.nextLine().toLowerCase();
+        if (gameInput.equals("y")) {
+            System.out.println("Please enter the filename(Remember to ues the proper relative path).");
+            adventureJson = theGame.loadAdventureJson(scnr.nextLine());
+            if (adventureJson != null) {
+                correctInput = true;
+                defaultAdventure = false;
             }
-            adventure_json2 = (JSONObject) adventure_json.get("adventure");
-        /* 3. Parse the file the user specified to create the
-        adventure, or load your default adventure*/
-        
-        adventure = theGame.generateAdventure(adventure_json2);
-        Room currentGameRoom = new Room();
-        currentGameRoom = adventure.getCurrentRoom();
-        // 4. Print the beginning of the adventure
-        if (defaultAdventure) {
-            System.out.println("Loading default adventure...\n");
-            System.out.println("You wake to the sound of chirping and immediately absorb your surrounds. You are in a bright deciduous forest, covered with a full canopy and thich leaves.\nYou see no signs of any civilization. This is where you adventure begins");
+        } else if (gameInput.equals("n")) {
+            adventureJson = theGame.loadAdventureJson("./src/main/java/adventure/example_adventure.json");
+            correctInput = true;
+        } else {
+            System.out.println("Error, invald input. Please Try again.");
         }
-        // 5. Begin game loop here
-        boolean endGame = false;
-            while(!endGame) {
-            System.out.println("What is your action?\n");
-            // 6. Get the user input. You'll need a Scanner
-            gameInput = scnr.nextLine();
-            System.out.printf("\n");
-            currentGameRoom = theGame.parseInput(gameInput,currentGameRoom);
-            adventure.setCurrentRoom(currentGameRoom);
-            /* 7+. Use a game instance method to parse the user
-            input to learn what the user wishes to do*/
-
-            //use a game instance method to execute the users wishes*/
-
-            /* if the user doesn't wish to quit,
-            repeat the steps above*/
-            }
+    }
+    adventureJson2 = (JSONObject) adventureJson.get("adventure");
+      
+    adventure = theGame.generateAdventure(adventureJson2);
+    Room currentGameRoom = new Room();
+    currentGameRoom = adventure.getCurrentRoom();
+    
+    if (defaultAdventure) {
+        System.out.println("\nLoading default adventure...\n");
+        System.out.println("You wake to the sound of chirping and immediately absorb your surroundingss. You are in a bright deciduous forest");
+        System.out.println("covered with a full canopy and thick leaves. You see no signs of any civilization. This is where you adventure begins!\n");
+    } else {
+        System.out.println("\nLoading your adventure...\n");
+    }
+    
+    System.out.println(currentGameRoom.getShortDescription() + "\n");
+    if (!currentGameRoom.listItems().isEmpty()) {
+        System.out.printf("Area contains:");
+        for (Item item : currentGameRoom.listItems()) {
+            System.out.printf("%s ",item.getName());
+        }
+        System.out.println("\n");
     }
 
-    /* you must have these instance methods and may need more*/
+    boolean endGame = false;
+        while(!endGame) {
+        System.out.println("What do you do?\n");
+        gameInput = scnr.nextLine();
+        System.out.printf("\n");
+        currentGameRoom = theGame.parseInput(gameInput,currentGameRoom);
+        adventure.setCurrentRoom(currentGameRoom);
+        }
+    }
 
     private Room parseInput(String gameInput, Room currentRoom) {
         String[] splitInput;
@@ -94,15 +86,14 @@ public class Game{
         gameInput = gameInput.toLowerCase();
         if (gameInput.indexOf(" ") == -1) {
             if (gameInput.equals("look")) {
-                System.out.println(currentRoom.getLongDescription());
+                System.out.println(currentRoom.getLongDescription() + "\n");
             } else if (gameInput.equals("q") || gameInput.equals("quit") || gameInput.equals("exit") ) {
                 System.out.println("Thanks for playing!");
                 System.exit(0);
             } else {
                 System.out.println("Please enter a vald input");
             }
-        }  
-        else {
+        }  else {
             splitInput = gameInput.split(" ");
             if (splitInput[0].equals("look")) {
                 lookItems(splitInput[1], currentRoom);
@@ -116,35 +107,33 @@ public class Game{
                     System.out.println("Please enter a vald input");
                 }
             } 
-            
-
         }
-
         return currentRoom;
-
     }
 
     private Room moveRooms(String dir, Room currentRoom) {
         Room tempRoom = currentRoom.getConnectedRoom(dir);
         if (tempRoom != null) {
             currentRoom = tempRoom;
-            System.out.println(currentRoom.getShortDescription());
-            System.out.println("Room contains: ")
-            for (Item item : currentRoom.listItems) {
-                item
+            System.out.println(currentRoom.getShortDescription() + "\n");
+            if (!currentRoom.listItems().isEmpty()) {
+                System.out.printf("Area contains:");
+                for (Item item : currentRoom.listItems()) {
+                    System.out.printf("%s ",item.getName());
+                }
+                System.out.println("\n");
             }
         } else {
-            System.out.println("Room not found");
+            System.out.println("You cannot traverse there");
         }
         return currentRoom;
     }
 
     private void lookItems(String item, Room currentRoom) {
         ArrayList<Item> itemList = currentRoom.listItems();
-
-        for (Item current_item : itemList) {
-            if (current_item.getName().equals(item)) {
-                System.out.println(current_item.getLongDescription());
+        for (Item currentItem : itemList) {
+            if (currentItem.getName().equals(item)) {
+                System.out.println(currentItem.getLongDescription()+ "\n");
             } else {
                 System.out.println("Cannot find item");
             }
@@ -154,41 +143,39 @@ public class Game{
 
 
    public JSONObject loadAdventureJson(String filename){
-      JSONObject adventure_json;
+      JSONObject adventureJson;
       JSONParser parser = new JSONParser();
       JSONObject adventure;
 
       try (Reader reader = new FileReader(filename)) {
-         adventure_json = (JSONObject) parser.parse(reader);
-         //System.out.println(adventure_json.toString());
+         adventureJson = (JSONObject) parser.parse(reader);
+         //System.out.println(adventureJson.toString());
       } catch (Exception e) {
          System.out.println("File not found.");
-         adventure_json = null;
+         adventureJson = null;
       }
 
       
 
-      return adventure_json;
+      return adventureJson;
     }
     public Adventure generateAdventure(JSONObject obj) {
       
         ArrayList<Room> roomArray = new ArrayList<Room>();
         ArrayList<Item> itemArray = new ArrayList<Item>();
         Room startRoom = new Room();
-        JSONArray room_list = (JSONArray) obj.get("room");
-        JSONArray item_list = (JSONArray) obj.get("item");
-
-        for (Object current_Item : item_list) {
-            JSONObject jItem = (JSONObject) current_Item;
-            //System.out.println(jItem.toString());
+        JSONArray roomList = (JSONArray) obj.get("room");
+        JSONArray itemList = (JSONArray) obj.get("item");
+    
+        for (Object currentItem : itemList) {
+            JSONObject jItem = (JSONObject) currentItem;
             Item item = new Item( (long) jItem.get("id"), (String) jItem.get("name"),  (String) jItem.get("desc"));
             itemArray.add(item);
         }
 
       
-      for (Object current_room : room_list) {
-        JSONObject jRoom = (JSONObject) current_room;
-        //System.out.println(jRoom.toString());
+      for (Object currentRoom : roomList) {
+        JSONObject jRoom = (JSONObject) currentRoom;
         Room room = new Room((long)jRoom.get("id") , (String) jRoom.get("name"), (String) jRoom.get("short_description"), (String) jRoom.get("long_description") );
         if (jRoom.containsKey("start")) {
             room.addStart((Boolean.valueOf((String)jRoom.get("start"))));
@@ -196,8 +183,8 @@ public class Game{
         }
         if ( jRoom.containsKey("loot")) {
             JSONArray loot = (JSONArray) jRoom.get("loot");
-            for (Object current_Item : loot) {
-                JSONObject itemInRoom = (JSONObject) current_Item;
+            for (Object currentItem : loot) {
+                JSONObject itemInRoom = (JSONObject) currentItem;
                 for (Item item : itemArray) { 
 
                     if ((long) itemInRoom.get("id") == item.getID() ) {
@@ -209,16 +196,16 @@ public class Game{
             }
         }
         JSONArray entranceID = (JSONArray) jRoom.get("entrance");
-        for (Object current_entrance : entranceID) {
-            JSONObject jEntrance = (JSONObject) current_entrance;
+        for (Object currentEntrance : entranceID) {
+            JSONObject jEntrance = (JSONObject) currentEntrance;
             room.setConnectedRoom( (String) jEntrance.get("dir") , (long) jEntrance.get("id"));
         }
         
         roomArray.add(room);
       }
 
-        for (Room current_Room : roomArray) {
-            current_Room.addAllRooms(roomArray);
+        for (Room currentRoom : roomArray) {
+            currentRoom.addAllRooms(roomArray);
         }
 
 

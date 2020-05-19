@@ -55,33 +55,30 @@ public class Room{
     }
 
     public Room getConnectedRoom(String direction) {
-        long ID = 0;
+        long id = 0;
         Room newRoom = null;
         for (String dir : directions) {
             //System.out.println(dir);
             //System.out.println(direction);
             if (dir.equals(direction)) {
-                ID = entranceID.get(directions.indexOf(direction));
-                System.out.print(ID);
+                id = entranceID.get(directions.indexOf(direction));
+                //System.out.print(id);
             }
         }
     
         for (Room connectedRoom : allRooms) {
-            if (ID == connectedRoom.getID()) {
+            if (id == connectedRoom.getID()) {
                 newRoom = connectedRoom;
             }
-
         }
-    
-
         return newRoom;
     }
 
-    public void addItem (Item item) {
+    public void addItem(Item item) {
         items.add(item);
     }
 
-    public void addStart (boolean start) {
+    public void addStart(boolean start) {
         startRoom = start;
     }
 
@@ -90,5 +87,4 @@ public class Room{
         entranceID.add(id);
     }
 
-    /* you may wish to add some helper methods*/
 }
