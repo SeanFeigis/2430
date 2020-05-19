@@ -140,8 +140,6 @@ public class Game{
         }
     }
 
-
-
    public JSONObject loadAdventureJson(String filename){
       JSONObject adventureJson;
       JSONParser parser = new JSONParser();
