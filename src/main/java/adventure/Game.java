@@ -129,6 +129,10 @@ public class Game{
         if (tempRoom != null) {
             currentRoom = tempRoom;
             System.out.println(currentRoom.getShortDescription());
+            System.out.println("Room contains: ")
+            for (Item item : currentRoom.listItems) {
+                item
+            }
         } else {
             System.out.println("Room not found");
         }
@@ -227,5 +231,4 @@ public class Game{
         
       return adventure;
     }
-
 }
