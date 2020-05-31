@@ -54,9 +54,7 @@ public class Game{
     currentGameRoom = adventure.getCurrentRoom();
     
     if (defaultAdventure) {
-        System.out.println("\nLoading default adventure...\n");
-        System.out.println("You wake to the sound of chirping and immediately absorb your surroundingss. You are in a bright deciduous forest");
-        System.out.println("covered with a full canopy and thick leaves. You see no signs of any civilization. This is where you adventure begins!\n");
+       theGame.printDefaultAdventure();
     } else {
         System.out.println("\nLoading your adventure...\n");
     }
@@ -110,7 +108,11 @@ public class Game{
         }
         return currentRoom;
     }
-
+    private void printDefaultAdventure() {
+        System.out.println("\nLoading default adventure...\n");
+        System.out.println("You wake to the sound of chirping and immediately absorb your surroundingss. You are in a bright deciduous forest");
+        System.out.println("covered with a full canopy and thick leaves. You see no signs of any civilization. This is where you adventure begins!\n");
+    }
     private Room moveRooms(String dir, Room currentRoom) {
         Room tempRoom = currentRoom.getConnectedRoom(dir);
         if (tempRoom != null) {

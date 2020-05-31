@@ -44,6 +44,7 @@ public class Command {
         //TODO validate the command here and ensure that the noun provided
         // is a legitimate second word for the command
         // throw an exception if not
+        //if ()
 
         this.action = command;
         this.noun = what;

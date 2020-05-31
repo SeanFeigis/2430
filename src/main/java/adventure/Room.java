@@ -1,29 +1,38 @@
 package adventure;
 import java.util.ArrayList;
-
+import java.util.HashMap;
 
 public class Room{
-    /* you will need to add some private member variables */
+    //Private member variables
     private long roomId;
     private String roomName;
-    private boolean startRoom = false;;
+    private boolean startRoom;
     private String longDescription;
     private String shortDescription;
     private ArrayList<Room> allRooms;
-    private ArrayList<Long> entranceID = new ArrayList<Long>();
-    private ArrayList<String> directions = new ArrayList<String>();
-    private ArrayList<Item> items = new ArrayList<Item>();
-    /* required public methods */
+    private ArrayList<Item> items;
+    private HashMap<String, Long> roomMapping;
 
     public Room() {
-
+        roomId = -1;
+        roomName = null;
+        startRoom = false;
+        longDescription = null;
+        shortDescription = null;
+        allRooms = new ArrayList<Room>();
+        items = new ArrayList<Item>();
+        roomMapping = new HashMap<String, Long>();
     }
 
     public Room(long id, String Name, String sDescription, String lDescription) {
         roomId = id;
         roomName = Name;
+        startRoom = false;
         shortDescription = sDescription;
-        longDescription = lDescription;    
+        longDescription = lDescription;
+        allRooms = new ArrayList<Room>();    
+        items = new ArrayList<Item>();
+        roomMapping = new HashMap<String, Long>();
     }
 
     public ArrayList<Item> listItems(){
@@ -57,15 +66,17 @@ public class Room{
     public Room getConnectedRoom(String direction) {
         long id = 0;
         Room newRoom = null;
-        for (String dir : directions) {
-            //System.out.println(dir);
-            //System.out.println(direction);
-            if (dir.equals(direction)) {
-                id = entranceID.get(directions.indexOf(direction));
-                //System.out.print(id);
-            }
+
+        
+        if (roomMapping.containsKey(direction)) {
+            id = roomMapping.get(direction);
+            newRoom = new Room();
+            newRoom.setID(id);
         }
-    
+
+        
+        
+
         for (Room connectedRoom : allRooms) {
             if (id == connectedRoom.getID()) {
                 newRoom = connectedRoom;
@@ -83,8 +94,30 @@ public class Room{
     }
 
     public void setConnectedRoom(String direction, long id) {
-        directions.add(direction);
-        entranceID.add(id);
+        roomMapping.put(direction, id);
     }
 
+    public void setID (long id) {
+        roomId = id;
+    }
+
+    public void setRoomName(String name) {
+        roomName = name;
+    }
+
+    public void setShortDescription(String sDescription) {
+        shortDescription = sDescription;
+    }
+
+    public void setLongDescription(String lDescription) {
+        longDescription = lDescription;
+    }
+
+    public void setStartRoom(boolean start) {
+        startRoom = start;
+    }
+
+    public String toString() {
+        return (roomName + " " + shortDescription);
+    }
 }
