@@ -17,8 +17,8 @@
       {
         "id": 101,
         "name": "The big tree",
-        "short_description": "A massive redwood",
-        "long_description": "A massive redwood looms over the area, casting a giant shadow behind you. there is a river to the east.",
+        "short_description": "A massive redwood dominates the area",
+        "long_description": "A massive redwood looms over the area, casting a giant shadow behind you. a ladder leads to a lookout point above you. there is a river to the east.",
         "entrance": [
           {
             "id": 100,
@@ -27,6 +27,10 @@
           {
             "id": 102,
             "dir": "E"
+          },
+          {
+            "id": 106,
+            "dir": "up"
           }
         ],
         "loot": [
@@ -76,17 +80,56 @@
         "id": 104,
         "name": "the dead tree",
         "short_description": "A dead tree sits in the middle of an open field",
-        "long_description": "A small dead tree sits alone in the middle of a small field. The tree is covered in moss.",
+        "long_description": "A small dead tree sits alone in the middle of a small field. The tree is covered in moss. there is a hole in the middle leading downwards.",
         "entrance": [
           {
             "id": 103,
             "dir": "E"
+          },
+          {
+              "id": 105,
+              "dir":"down"
           }
         ],
         "loot": [
           {
             "id": 3
           }
+        ]
+      },
+      { 
+        "id": 105,
+        "name": "the hole in the tree",
+        "short_description": "a small room underneath the tree",
+        "long_description": "a poorly lit room sits underneath the tree. there are no signs of life and no exits. the only way out is back up. ",
+        "entrance": [
+          {
+            "id": 104,
+            "dir": "up"
+          }
+        ],
+        "loot": [
+        {
+          "id": 4
+        }
+      
+        ]
+      },
+      { 
+        "id": 106,
+        "name": "lookout platform",
+        "short_description": "a small lookout platform on the redwood",
+        "long_description": "A small lookout platform hangs attached to the redwood. From here, you can see a forest to the south, and a river to the east.",
+        "entrance": [
+          {
+            "id": 101,
+            "dir": "down"
+          }
+        ],
+        "loot": [
+        {
+          "id": 5
+        }
         ]
       }
     ],
@@ -105,6 +148,16 @@
         "id": 3,
         "name": "moss",
         "desc": "Moldy green moss"
+      },
+      {
+        "id": 4,
+        "name": "bread",
+        "desc": "stale bread"
+      },
+      {
+        "id": 5,
+        "name": "binoculars",
+        "desc": "an expensive pair of binoculars"
       }
     ]
   }

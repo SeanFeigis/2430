@@ -1,6 +1,6 @@
 package adventure;
 
-public class Item{
+public class Item implements java.io.Serializable{
     /* you will need to add some private member variables */
     private long itemID;
     private String itemName;
@@ -56,8 +56,11 @@ public class Item{
         return longDescription;
     }
 
+    /**
+      *returns a reference to the room that contains the item
+      *@return containing room
+    */
     public Room getContainingRoom(){
-        //returns a reference to the room that contains the item
        return containingRoom;
     }
 
@@ -87,10 +90,18 @@ public class Item{
 
     /**
      *Containing item ID setter
-     @param ID the item ID
+     @param id the item ID
      */
-    public void setID(long ID) {
-        itemID = ID;
+    public void setID(long id) {
+        itemID = id;
+    }
+
+    /**
+     *toString for item
+     *@return toString of item
+     */
+    public String toString() {
+        return (getName() + " " + getID());
     }
 
     /* you may wish to add some helper methods*/

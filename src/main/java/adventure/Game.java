@@ -3,163 +3,198 @@ import java.util.Scanner;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 
 //JSON imports
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class Game{
+public class Game implements java.io.Serializable {
 
-   /* this is the class that runs the game.
-   You may need some member variables */
+    private Parser parser = new Parser();
+    private Adventure adventure;
+    private Scanner scnr = new Scanner(System.in);
 
-   public static void main(String[] args){
+    public static void main(String[] args){
+        Command nextCommand = null;
+        Game theGame = new Game();
+        String saveGameType;
+        String fileName;
+        JSONObject adventureJson = new JSONObject();
+        JSONObject adventureJson2 = new JSONObject();
+        String gameInput;
+        boolean defaultAdventure = true;
 
-    Scanner scnr = new Scanner(System.in);
-    Game theGame = new Game();
-
-    JSONObject adventureJson = new JSONObject();
-    JSONObject adventureJson2 = new JSONObject();
-    Adventure adventure;
-    String gameInput;
-    boolean defaultAdventure = true;
-
-    System.out.println("*******************************");
-    System.out.println("Welcome to the adventure game!");
-    System.out.println("*******************************");
-
-    System.out.println("Would you like to load a json file(y/n)?");
-    boolean correctInput = false;
-    while (!correctInput) {
-        gameInput = scnr.nextLine().toLowerCase();
-        if (gameInput.equals("y")) {
-            System.out.println("Please enter the filename(Remember to ues the proper relative path).");
-            adventureJson = theGame.loadAdventureJson(scnr.nextLine());
-            if (adventureJson != null) {
-                correctInput = true;
-                defaultAdventure = false;
-            }
-        } else if (gameInput.equals("n")) {
-            adventureJson = theGame.loadAdventureJson("./src/main/java/adventure/example_adventure.json");
-            correctInput = true;
+        if (args.length != 2) {
+            System.out.println("Invalid commandline, please input proper command line commands");
+            System.exit(1);
         } else {
-            System.out.println("Error, invald input. Please Try again.");
+            saveGameType = args[0];
+            fileName = args[1];
         }
-    }
-    adventureJson2 = (JSONObject) adventureJson.get("adventure");
-      
-    adventure = theGame.generateAdventure(adventureJson2);
-    Room currentGameRoom = new Room();
-    currentGameRoom = adventure.getCurrentRoom();
-    
-    if (defaultAdventure) {
-       theGame.printDefaultAdventure();
-    } else {
-        System.out.println("\nLoading your adventure...\n");
-    }
-    
-    System.out.println(currentGameRoom.getShortDescription() + "\n");
-    if (!currentGameRoom.listItems().isEmpty()) {
-        System.out.printf("Area contains:");
-        for (Item item : currentGameRoom.listItems()) {
-            System.out.printf("%s ",item.getName());
-        }
-        System.out.println("\n");
-    }
-
-    boolean endGame = false;
-        while(!endGame) {
-        System.out.println("What do you do?\n");
-        gameInput = scnr.nextLine();
-        System.out.printf("\n");
-        currentGameRoom = theGame.parseInput(gameInput,currentGameRoom);
-        adventure.setCurrentRoom(currentGameRoom);
-        }
-    }
-
-    private Room parseInput(String gameInput, Room currentRoom) {
-        String[] splitInput;
-        gameInput = gameInput.trim();
-        gameInput = gameInput.toLowerCase();
-        if (gameInput.indexOf(" ") == -1) {
-            if (gameInput.equals("look")) {
-                System.out.println(currentRoom.getLongDescription() + "\n");
-            } else if (gameInput.equals("q") || gameInput.equals("quit") || gameInput.equals("exit") ) {
-                System.out.println("Thanks for playing!");
+        
+        if (args[0].equals("-a")) {
+            InputStream inputStream = Game.class.getClassLoader().getResourceAsStream(args[1]);
+            if (inputStream == null) {
+                System.out.println("The file does not exist!");
                 System.exit(0);
-            } else {
-                System.out.println("Please enter a vald input");
             }
-        }  else {
-            splitInput = gameInput.split(" ");
-            if (splitInput[0].equals("look")) {
-                lookItems(splitInput[1], currentRoom);
-            } else if (splitInput[0].equals("go")) {
-                if (splitInput[1].toUpperCase().equals("N") || splitInput[1].toUpperCase().equals("S") || splitInput[1].toUpperCase().equals("E") || splitInput[1].toUpperCase().equals("W")) {
-                    Room tempRoom = moveRooms(splitInput[1].toUpperCase(), currentRoom);
-                    if (tempRoom != null) {
-                        currentRoom = tempRoom;
-                    }
-                } else {
-                    System.out.println("Please enter a vald input\n");
-                }
-            } 
+            adventureJson = theGame.loadAdventureJson(inputStream);
+            defaultAdventure = true;
+            adventureJson2 = (JSONObject) adventureJson.get("adventure");
+            theGame.adventure = theGame.generateAdventure(adventureJson2);
+        } else if (args[0].equals("-l")) {
+            theGame.adventure = theGame.loadAdventure(args[1]);
+            defaultAdventure = false; 
         }
-        return currentRoom;
+        
+        System.out.println("*******************************");
+        System.out.println("Welcome to the adventure game!");
+        System.out.println("*******************************");
+       
+
+        if (defaultAdventure) {
+            theGame.printDefaultAdventure();
+        } else {
+            System.out.println("\nLoading your adventure...\n");
+        }
+
+        theGame.printCurrentRoom();
+        boolean endGame = false;
+        while(!endGame) {
+            System.out.println("What do you do?\n");
+            gameInput = theGame.scnr.nextLine();
+            System.out.printf("\n");
+
+            try {
+                nextCommand = theGame.parse(gameInput);
+                theGame.followCommands(nextCommand);
+            } catch (InvalidCommandException exc) {
+                System.out.println("Didnt recognize command\n");
+                theGame.printCurrentRoom();
+            }
+
+        }
     }
+
+    private void followCommands(Command toDo) {
+        if (toDo.getActionWord().equals("go")) {
+           System.out.print(adventure.moveRooms(toDo));
+            printCurrentRoom();
+        } else if (toDo.getActionWord().equals("take")) {
+            System.out.println(adventure.takeItems(toDo));
+            printCurrentRoom();
+        } else if (toDo.getActionWord().equals("look")) {
+            System.out.println(adventure.look(toDo));
+        } else if (toDo.getActionWord().equals("quit")) {
+            quitAdventure();
+        } else if (toDo.getActionWord().equals("inventory")) {
+            System.out.println(adventure.viewInventory());
+            printCurrentRoom();
+        }
+    }
+
+    private void promptName(){
+        System.out.println("What is your characters name?");
+        adventure.getPlayer().setName(scnr.nextLine());
+        adventure.getPlayer().setSaveGameName(adventure.getPlayer().getName() + "Save.sav");
+    }
+
+    private void quitAdventure() {
+        System.out.println("Would you like to save the game?(\"y\" to save, anything else to quit)");
+        String input = scnr.nextLine().toLowerCase();
+            if (input.equals("y")) {
+                promptName();
+                try {
+                    FileOutputStream outPutStream = new FileOutputStream(adventure.getPlayer().getSaveGameName());
+                    ObjectOutputStream outPutDest = new ObjectOutputStream(outPutStream);
+
+                    outPutDest.writeObject(adventure);
+
+                    outPutDest.close();
+                    outPutStream.close();
+
+                    System.out.println("Game saved as: "+adventure.getPlayer().getSaveGameName());
+                    System.exit(0);
+                } catch(IOException ex) {
+                    System.out.println(ex);
+                }
+            } else {
+                System.exit(0);
+            }
+       
+    }
+
+    private void printCurrentRoom() {
+        System.out.println(adventure.getCurrentRoom().getShortDescription() + "\n");
+        if (!adventure.getCurrentRoom().listItems().isEmpty()) {
+            System.out.printf("Area contains:");
+            for (Item item : adventure.getCurrentRoom().listItems()) {
+                System.out.printf("%s ",item.getName());
+            }
+            System.out.println("\n");
+        }
+    }
+
     private void printDefaultAdventure() {
         System.out.println("\nLoading default adventure...\n");
         System.out.println("You wake to the sound of chirping and immediately absorb your surroundingss. You are in a bright deciduous forest");
         System.out.println("covered with a full canopy and thick leaves. You see no signs of any civilization. This is where you adventure begins!\n");
     }
-    private Room moveRooms(String dir, Room currentRoom) {
-        Room tempRoom = currentRoom.getConnectedRoom(dir);
-        if (tempRoom != null) {
-            currentRoom = tempRoom;
-            System.out.println(currentRoom.getShortDescription() + "\n");
-            if (!currentRoom.listItems().isEmpty()) {
-                System.out.printf("Area contains:");
-                for (Item item : currentRoom.listItems()) {
-                    System.out.printf("%s ",item.getName());
-                }
-                System.out.println("\n");
-            }
-        } else {
-            System.out.println("You cannot traverse there\n");
+ 
+    private Command parse(String userInput) throws InvalidCommandException {
+        return parser.parseUserCommands(userInput);
+    }
+
+    private Adventure loadAdventure(String saveName) {
+        Adventure advent = null;
+
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(saveName));) {
+            advent = (Adventure)in.readObject();
+            System.out.println("Object has been loaded");
+        } catch(IOException ex) {
+            System.out.println("IOException is caught " + ex);
+        } catch(ClassNotFoundException ex) {
+            System.out.println("ClassNotFoundException is caught " + ex);
         }
-        return currentRoom;
+        return advent;
     }
 
-    private void lookItems(String item, Room currentRoom) {
-        ArrayList<Item> itemList = currentRoom.listItems();
-        for (Item currentItem : itemList) {
-            if (currentItem.getName().equals(item)) {
-                System.out.println(currentItem.getLongDescription()+ "\n");
-            } else {
-                System.out.println("Cannot find item");
-            }
+    private JSONObject loadAdventureJson(InputStream inputStream) {
+        JSONObject adventureJson;
+        JSONParser jparser = new JSONParser();
+
+        try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+            adventureJson = (JSONObject) jparser.parse(reader);
+        } catch (Exception e) {
+            System.out.println("File not found.");
+            System.exit(0);
+            adventureJson = null;
         }
+        return adventureJson;
     }
 
-   public JSONObject loadAdventureJson(String filename){
-      JSONObject adventureJson;
-      JSONParser parser = new JSONParser();
-      JSONObject adventure;
+    private JSONObject loadAdventureJson(String filename){
+        JSONObject adventureJson;
+        JSONParser jparser = new JSONParser();
 
-      try (Reader reader = new FileReader(filename)) {
-         adventureJson = (JSONObject) parser.parse(reader);
-         //System.out.println(adventureJson.toString());
-      } catch (Exception e) {
-         System.out.println("File not found.");
-         adventureJson = null;
-      }
-
-      
-
-      return adventureJson;
+        try (Reader reader = new FileReader(filename)) {
+            adventureJson = (JSONObject) jparser.parse(reader);
+        } catch (Exception e) {
+            System.out.println("File not found.");
+            adventureJson = null;
+        }
+        return adventureJson;
     }
-    public Adventure generateAdventure(JSONObject obj) {
+
+    private Adventure generateAdventure(JSONObject obj) {
       
         ArrayList<Room> roomArray = new ArrayList<Room>();
         ArrayList<Item> itemArray = new ArrayList<Item>();
@@ -176,7 +211,7 @@ public class Game{
       
       for (Object currentRoom : roomList) {
         JSONObject jRoom = (JSONObject) currentRoom;
-        Room room = new Room((long)jRoom.get("id") , (String) jRoom.get("name"), (String) jRoom.get("short_description"), (String) jRoom.get("long_description") );
+        Room room = new Room((long)jRoom.get("id"),(String) jRoom.get("name"),(String) jRoom.get("short_description"),(String)jRoom.get("long_description") );
         if (jRoom.containsKey("start")) {
             room.addStart((Boolean.valueOf((String)jRoom.get("start"))));
             startRoom = room;
@@ -208,14 +243,9 @@ public class Game{
             currentRoom.addAllRooms(roomArray);
         }
 
-
-
-
-
-        //System.out.println(roomArray.get(1).listItems().get(0).getName());
-        Adventure adventure = new Adventure(roomArray, itemArray);
-        adventure.setCurrentRoom(startRoom);
+        Adventure advent = new Adventure(roomArray, itemArray);
+        advent.setCurrentRoom(startRoom);
         
-      return adventure;
+      return advent;
     }
 }

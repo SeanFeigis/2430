@@ -1,14 +1,11 @@
 package adventure;
-
-/* TODO add a static data structure or another enum class
-that lists all the valid commands.  Then add methods for validating
-commands 
-
-You may add other methods to this class if you wish*/
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Command {
     private String action;
     private String noun;
+    private static ArrayList<String> allCommands = new ArrayList<String>(Arrays.asList("go", "look", "take", "quit", "inventory"));
 
   /**
      * Create a command object with default values.  
@@ -18,8 +15,6 @@ public class Command {
     public Command() throws InvalidCommandException {
         this(null, null);
     }
-
-
 
   /**
      * Create a command object given only an action.  this.noun is set to null
@@ -33,7 +28,6 @@ public class Command {
         // a single-word action
         this(command, null);
     }
-
     /**
      * Create a command object given both an action and a noun
      *
@@ -46,9 +40,14 @@ public class Command {
         // throw an exception if not
         //if ()
 
-        this.action = command;
-        this.noun = what;
+            if (allCommands.contains(command)) {
+                this.action = command;
+                this.noun = what;
+            } else {
+                throw new InvalidCommandException( "Invalid command: " + command);  
+            }
     }
+
 
     /**
      * Return the command word (the first word) of this command. If the
@@ -68,12 +67,18 @@ public class Command {
         return this.noun;
     }
 
-
-
     /**
      * @return true if the command has a second word.
      */
     public boolean hasSecondWord() {
         return (noun != null);
+    }
+
+    /**
+     *toString of Command class
+     *@return toString of command
+     */
+    public String toString() {
+        return getActionWord() + " " + getNoun();
     }
 }
