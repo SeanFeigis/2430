@@ -54,11 +54,19 @@ public class Room implements java.io.Serializable{
         return items;
     }
 
+     /**
+     *Adds the list of items sin the room
+     *@param item arrayList of items
+     */
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+    }
+
     /**
      *Setter for room list
      *@param allRoom array of rooms
      */
-    public void addAllRooms(ArrayList<Room> allRoom) {
+    public void setAllRooms(ArrayList<Room> allRoom) {
         allRooms = allRoom;
     }
 
@@ -114,7 +122,7 @@ public class Room implements java.io.Serializable{
         if (roomMapping.containsKey(direction)) {
             id = roomMapping.get(direction);
             newRoom = new Room();
-            newRoom.setID(id);
+            newRoom.setRoomID(id);
         }
 
         for (Room connectedRoom : allRooms) {
@@ -145,7 +153,7 @@ public class Room implements java.io.Serializable{
      *adds start to a room
      *@param start boolean of start
      */
-    public void addStart(boolean start) {
+    public void setStartRoom(boolean start) {
         startRoom = start;
     }
 
@@ -169,7 +177,7 @@ public class Room implements java.io.Serializable{
      *Setter for Id
      *@param id id of room
      */
-    public void setID(long id) {
+    public void setRoomID(long id) {
         roomId = id;
     }
 
@@ -177,7 +185,7 @@ public class Room implements java.io.Serializable{
      *Setter for roomName
      *@param name name of room
      */
-    public void setName(String name) {
+    public void setRoomName(String name) {
         roomName = name;
     }
 
@@ -195,6 +203,10 @@ public class Room implements java.io.Serializable{
      */
     public void setLongDescription(String lDescription) {
         longDescription = lDescription;
+    }
+
+    public void setRoomMapping(HashMap<String, Long> roomMapping) {
+        this.roomMapping = roomMapping;
     }
 
     /**

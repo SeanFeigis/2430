@@ -20,7 +20,7 @@ public class Adventure implements java.io.Serializable {
         setAllRooms(roomArray);
         setAllItems(itemArray);
         setCurrentRoom(null);
-        setPlayer(new Player());
+        setPlayerCharacter(new Player());
     }
 
 
@@ -31,7 +31,7 @@ public class Adventure implements java.io.Serializable {
         setCurrentRoom(new Room());
         setAllRooms(new ArrayList<Room>());
         setAllItems(new ArrayList<Item>());
-        setPlayer(new Player());
+        setPlayerCharacter(new Player());
     }
 
     /**
@@ -102,7 +102,7 @@ public class Adventure implements java.io.Serializable {
      *Setter for player
      *@param player
      */
-    public void setPlayer(Player player) {
+    public void setPlayerCharacter(Player player) {
         playerCharacter = player;
     }
 
@@ -191,16 +191,25 @@ public class Adventure implements java.io.Serializable {
     public String viewInventory() {
         String response;
 
-        if (playerCharacter.getUserItems().isEmpty()) {
+        if (playerCharacter.getInventory().isEmpty()) {
             response = "Your inventory is empty!\n";
         } else {
             response = "Inventory: \n";
-            for (Item item: playerCharacter.getUserItems()) {
+            for (Item item: playerCharacter.getInventory()) {
                 response+= item.getName() + "\n";
             }
         }
         return response;
     }
+
+    /*public void useItem(Command toDo) {
+        String response;
+        for (Item items: playerCharacter.getUserItems()) {
+            if (toDo.getNoun().equals(items.getName())) {
+                System.out.println("Use the sword)");
+            }
+        }
+    }*/
 
     /**
      *toString of Adventure

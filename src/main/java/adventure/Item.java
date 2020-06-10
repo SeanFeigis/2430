@@ -4,7 +4,7 @@ public class Item implements java.io.Serializable{
     /* you will need to add some private member variables */
     private long itemID;
     private String itemName;
-    private String longDescription;
+    private String description;
     private Room containingRoom;
     /* required public methods */
 
@@ -13,12 +13,10 @@ public class Item implements java.io.Serializable{
      *Default constructor
      */
     public Item() {
-        setID(-1);
-        setName("null");
+        setItemID(-1);
+        setItemName("null");
         setDescription("null");
     }
-
-
 
     /**
      *Constructor
@@ -27,8 +25,8 @@ public class Item implements java.io.Serializable{
      *@param description description of the item
     */
     public Item(long id, String name, String description) {
-        setID(id);
-        setName(name);
+        setItemID(id);
+        setItemName(name);
         setDescription(description);
     }
 
@@ -44,7 +42,7 @@ public class Item implements java.io.Serializable{
       *ID getter
       *@return item ID
     */
-    public long getID() {
+    public long getItemID() {
         return itemID;
     }
 
@@ -53,7 +51,7 @@ public class Item implements java.io.Serializable{
       *@return item long description
     */
     public String getLongDescription(){
-        return longDescription;
+        return description;
     }
 
     /**
@@ -76,7 +74,7 @@ public class Item implements java.io.Serializable{
      *Containing item name setter
      @param name the item name
      */
-    public void setName(String name) {
+    public void setItemName(String name) {
         itemName = name;
     }
 
@@ -85,14 +83,14 @@ public class Item implements java.io.Serializable{
      @param description the item description
      */
     public void setDescription(String description) {
-        longDescription = description;
+        this.description = description;
     }
 
     /**
      *Containing item ID setter
      @param id the item ID
      */
-    public void setID(long id) {
+    public void setItemID(long id) {
         itemID = id;
     }
 
@@ -101,7 +99,7 @@ public class Item implements java.io.Serializable{
      *@return toString of item
      */
     public String toString() {
-        return (getName() + " " + getID());
+        return (getName() + " " + getItemID());
     }
 
     /* you may wish to add some helper methods*/

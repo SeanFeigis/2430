@@ -12,16 +12,24 @@ the array of all rooms is populated correctly. therefore I can only test that th
 return null correctly
 */
 
-
 public class RoomTest{
     private Room testRoom;
     long id = 0;
 @Before
 public void setup(){
     testRoom = new Room();
-    testRoom.setID(id);
+    testRoom.setRoomID(id);
     testRoom.setConnectedRoom("S", id);
 }
+
+public void setTestRoom(Room room) {
+    testRoom = room;
+}
+
+public void setID(long id) {
+    this.id = id;
+}
+
 
 @Test
 public void testgetConnectedRoom(){

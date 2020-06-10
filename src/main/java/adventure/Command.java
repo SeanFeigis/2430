@@ -60,11 +60,28 @@ public class Command {
     }
 
     /**
+     * Sets the command word
+     * @param word the word to be set
+     */
+    public void setAction(String word) {
+        action = word;
+    }
+
+    /**
      * @return The second word of this command. Returns null if there was no
      * second word.
      */
     public String getNoun() {
         return this.noun;
+    }
+
+
+    /**
+     * Sets the noun word
+     * @param word the word to be set
+     */
+    public void setNoun(String word) {
+        noun = word;
     }
 
     /**

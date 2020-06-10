@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Player implements java.io.Serializable {
     private String userName;
-    private ArrayList<Item> userItems;
+    private ArrayList<Item> inventory;
     private String saveGameName;
     private Room currentRoom;
 
@@ -13,10 +13,10 @@ public class Player implements java.io.Serializable {
      *
      */
     public Player() {
-        setName("null");
+        setUserName("null");
         setSaveGameName("null");
         setCurrentRoom(new Room());
-        setUserItems(new ArrayList<Item>());
+        setInventory(new ArrayList<Item>());
     }
 
      /**
@@ -26,10 +26,10 @@ public class Player implements java.io.Serializable {
      *@param currRoom of the player
      */
     public Player(String name, String gameName, Room currRoom) {
-        setName(name);
+        setUserName(name);
         setSaveGameName(gameName);
         setCurrentRoom(currRoom);
-        setUserItems(new ArrayList<Item>());
+        setInventory(new ArrayList<Item>());
     }
 
     /**
@@ -37,7 +37,7 @@ public class Player implements java.io.Serializable {
      *@param itemToAdd new item
      */
     public void addItem(Item itemToAdd) {
-        userItems.add(itemToAdd);
+        inventory.add(itemToAdd);
     }
 
     /**
@@ -52,7 +52,7 @@ public class Player implements java.io.Serializable {
      *Setter for name
      *@param name name to set
      */
-    public void setName(String name) {
+    public void setUserName(String name) {
         userName = name;
     }
 
@@ -60,16 +60,16 @@ public class Player implements java.io.Serializable {
      *Getter for inventory
      *@return inventory
      */
-    public ArrayList<Item> getUserItems() {
-        return userItems;
+    public ArrayList<Item> getInventory() {
+        return inventory;
     }
 
     /**
      *Setter for userItems
      *@param itemArray inventory to set
      */
-    public void setUserItems(ArrayList<Item> itemArray) {
-        userItems = itemArray;
+    public void setInventory(ArrayList<Item> itemArray) {
+        inventory = itemArray;
     }
 
     /**
@@ -102,5 +102,14 @@ public class Player implements java.io.Serializable {
      */
     public void setSaveGameName(String gameName) {
         saveGameName = gameName;
+    }
+
+
+    /**
+     *toString method for Player
+     *@return returns name and room
+     */
+    public String toString() {
+        return userName + "room: " + currentRoom ;
     }
 }

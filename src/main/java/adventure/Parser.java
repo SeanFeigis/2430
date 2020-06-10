@@ -1,16 +1,15 @@
 package adventure;
-import java.util.Arrays;
 
 public class Parser {
 
-    private static String[] allCommands = {"go", "look", "take", "quit", "inventory"};
+    private String allCommands = "go, look, take, quit, inventory, use";
 
     /**
      *returns a command object with parsed values
      *@param userCommand the user input
      *@return command object
      */
-    public Command parseUserCommands(String userCommand) throws InvalidCommandException {
+    public Command parseUserCommand(String userCommand) throws InvalidCommandException {
         Command newCommand;
         userCommand = userCommand.trim();
         userCommand = userCommand.toLowerCase();
@@ -27,8 +26,12 @@ public class Parser {
      *return all the commands
      *@return commands
      */
-    public String[] allCommands() {
+    public String allCommands() {
         return allCommands;
+    }
+
+    public void setAllCommands(String commands) {
+        allCommands = commands;
     }
 
     /**
@@ -36,6 +39,6 @@ public class Parser {
      *@return toString
      */
     public String toString() {
-        return Arrays.toString(allCommands);
+        return allCommands;
     }
 }

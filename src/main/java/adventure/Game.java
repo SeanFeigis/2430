@@ -47,24 +47,17 @@ public class Game implements java.io.Serializable {
                 System.exit(0);
             }
             adventureJson = theGame.loadAdventureJson(inputStream);
-            defaultAdventure = true;
             adventureJson2 = (JSONObject) adventureJson.get("adventure");
             theGame.adventure = theGame.generateAdventure(adventureJson2);
         } else if (args[0].equals("-l")) {
             theGame.adventure = theGame.loadAdventure(args[1]);
-            defaultAdventure = false; 
         }
         
         System.out.println("*******************************");
         System.out.println("Welcome to the adventure game!");
         System.out.println("*******************************");
-       
-
-        if (defaultAdventure) {
-            theGame.printDefaultAdventure();
-        } else {
-            System.out.println("\nLoading your adventure...\n");
-        }
+        System.out.println("\nLoading your adventure...\n");
+    
 
         theGame.printCurrentRoom();
         boolean endGame = false;
@@ -84,7 +77,7 @@ public class Game implements java.io.Serializable {
         }
     }
 
-    private void followCommands(Command toDo) {
+    public void followCommands(Command toDo) {
         if (toDo.getActionWord().equals("go")) {
            System.out.print(adventure.moveRooms(toDo));
             printCurrentRoom();
@@ -98,16 +91,19 @@ public class Game implements java.io.Serializable {
         } else if (toDo.getActionWord().equals("inventory")) {
             System.out.println(adventure.viewInventory());
             printCurrentRoom();
-        }
+        } /*else if (toDo.getActionWord().equals("use")) {
+            adventure.useItem(toDo);
+            printCurrentRoom();
+        } */
     }
 
-    private void promptName(){
+    public void promptName(){
         System.out.println("What is your characters name?");
-        adventure.getPlayer().setName(scnr.nextLine());
+        adventure.getPlayer().setUserName(scnr.nextLine());
         adventure.getPlayer().setSaveGameName(adventure.getPlayer().getName() + "Save.sav");
     }
 
-    private void quitAdventure() {
+    public void quitAdventure() {
         System.out.println("Would you like to save the game?(\"y\" to save, anything else to quit)");
         String input = scnr.nextLine().toLowerCase();
             if (input.equals("y")) {
@@ -132,7 +128,8 @@ public class Game implements java.io.Serializable {
        
     }
 
-    private void printCurrentRoom() {
+    public void printCurrentRoom() {
+        System.out.println(adventure.getCurrentRoom().getName());
         System.out.println(adventure.getCurrentRoom().getShortDescription() + "\n");
         if (!adventure.getCurrentRoom().listItems().isEmpty()) {
             System.out.printf("Area contains:");
@@ -143,17 +140,17 @@ public class Game implements java.io.Serializable {
         }
     }
 
-    private void printDefaultAdventure() {
+    public void printDefaultAdventure() {
         System.out.println("\nLoading default adventure...\n");
         System.out.println("You wake to the sound of chirping and immediately absorb your surroundingss. You are in a bright deciduous forest");
         System.out.println("covered with a full canopy and thick leaves. You see no signs of any civilization. This is where you adventure begins!\n");
     }
  
-    private Command parse(String userInput) throws InvalidCommandException {
-        return parser.parseUserCommands(userInput);
+    public Command parse(String userInput) throws InvalidCommandException {
+        return parser.parseUserCommand(userInput);
     }
 
-    private Adventure loadAdventure(String saveName) {
+    public Adventure loadAdventure(String saveName) {
         Adventure advent = null;
 
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(saveName));) {
@@ -167,7 +164,7 @@ public class Game implements java.io.Serializable {
         return advent;
     }
 
-    private JSONObject loadAdventureJson(InputStream inputStream) {
+    public JSONObject loadAdventureJson(InputStream inputStream) {
         JSONObject adventureJson;
         JSONParser jparser = new JSONParser();
 
@@ -181,7 +178,7 @@ public class Game implements java.io.Serializable {
         return adventureJson;
     }
 
-    private JSONObject loadAdventureJson(String filename){
+    public JSONObject loadAdventureJson(String filename){
         JSONObject adventureJson;
         JSONParser jparser = new JSONParser();
 
@@ -194,7 +191,7 @@ public class Game implements java.io.Serializable {
         return adventureJson;
     }
 
-    private Adventure generateAdventure(JSONObject obj) {
+    public Adventure generateAdventure(JSONObject obj) {
       
         ArrayList<Room> roomArray = new ArrayList<Room>();
         ArrayList<Item> itemArray = new ArrayList<Item>();
@@ -213,7 +210,7 @@ public class Game implements java.io.Serializable {
         JSONObject jRoom = (JSONObject) currentRoom;
         Room room = new Room((long)jRoom.get("id"),(String) jRoom.get("name"),(String) jRoom.get("short_description"),(String)jRoom.get("long_description") );
         if (jRoom.containsKey("start")) {
-            room.addStart((Boolean.valueOf((String)jRoom.get("start"))));
+            room.setStartRoom((Boolean.valueOf((String)jRoom.get("start"))));
             startRoom = room;
         }
         if ( jRoom.containsKey("loot")) {
@@ -222,7 +219,7 @@ public class Game implements java.io.Serializable {
                 JSONObject itemInRoom = (JSONObject) currentItem;
                 for (Item item : itemArray) { 
 
-                    if ((long) itemInRoom.get("id") == item.getID() ) {
+                    if ((long) itemInRoom.get("id") == item.getItemID() ) {
                         item.setContainingRoom(room);
                         room.addItem(item); 
                         
@@ -240,12 +237,24 @@ public class Game implements java.io.Serializable {
       }
 
         for (Room currentRoom : roomArray) {
-            currentRoom.addAllRooms(roomArray);
+            currentRoom.setAllRooms(roomArray);
         }
 
         Adventure advent = new Adventure(roomArray, itemArray);
         advent.setCurrentRoom(startRoom);
         
       return advent;
+    }
+
+    public void setParser(Parser parser) {
+        this.parser = parser;
+    }
+
+    public void setAdventure(Adventure adventure) {
+        this.adventure = adventure;
+    }
+
+    public void setScnr(Scanner scnr) {
+        this.scnr = scnr;
     }
 }
